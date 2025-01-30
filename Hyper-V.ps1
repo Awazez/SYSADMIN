@@ -14,7 +14,7 @@ param (
     [string]$Path = "C:\ProgramData\Microsoft\Windows\Hyper-V\",
     [string]$VHDPath = "C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\",
     [int]$VHDSizeGB = 64,
-    [int]$Memory = 4294967296,
+    [int64]$Memory = 4294967296,
     [string]$SwitchName = "LAN-Physique",
     [string]$ISOPath = "E:\Win11_24H2_French_x64.iso"
 )
