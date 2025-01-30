@@ -9,7 +9,6 @@
 #                                                             #
 #        Script Install a VM on Hyper-V with PowerShell       #
 #-------------------------------------------------------------#
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 param (
     [string]$Name = "VM-W11",
     [string]$Path = "C:\ProgramData\Microsoft\Windows\Hyper-V\",
