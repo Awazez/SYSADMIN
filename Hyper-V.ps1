@@ -16,7 +16,7 @@ param (
     [int]$VHDSizeGB = 64,
     [int64]$Memory = 4294967296,
     [string]$SwitchName = "LAN-Physique",
-    [string]$ISOPath = "E:\Win11_24H2_French_x64.iso"
+    [string]$ISOPath = "E:\SSS_X64FREE_FR-FR_DV9.iso"
 )
 
 # Vérification des prérequis
