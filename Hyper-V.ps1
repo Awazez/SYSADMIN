@@ -55,3 +55,4 @@ Write-Host "Mémoire dynamique activée pour la VM $Name." -ForegroundColor Cyan
 
 Write-Host "Installation de la VM terminée avec succès !" -ForegroundColor Green
 
+Read-Host "Appuie sur Entrée pour quitter"
