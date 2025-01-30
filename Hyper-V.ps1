@@ -12,8 +12,8 @@
 
 param (
     [string]$Name = "VM-W11",
-    [string]$Path = "D:\Hyper-V",
-    [string]$VHDPath = "D:\Hyper-V\$Name\Virtual Hard Disks",
+    [string]$Path = "C:\ProgramData\Microsoft\Windows\Hyper-V\",
+    [string]$VHDPath = "C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\",
     [int]$VHDSizeGB = 64,
     [string]$Memory = "4GB",
     [string]$SwitchName = "LAN-Physique",
