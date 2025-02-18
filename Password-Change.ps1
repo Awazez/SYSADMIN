@@ -11,11 +11,12 @@
 #-------------------------------------------------------------#
 
 param (
+    [string]$KeePassPath = "C:\Program Files\KeePass\KeePass.exe",
     [string]$DatabasePath = "C:\Users\martin.aubeut\Documents\KeePass\database.kdbx",
-    [string]$MasterPassword = "MonMotDePassePrincipal", # ⚠️ À remplacer par une variable d'environnement idéalement
+    [string]$MasterPassword = "MonMotDePassePrincipal",  # ⚠️ Utiliser une variable d’environnement pour plus de sécurité
+    [string]$KeyFilePath = "",  # Ajoute le chemin du keyfile si nécessaire
     [string]$EntryTitle = "Admin Windows",
     [string]$Username = "Administrator",
-    [string]$KeePassCmdPath = "C:\Program Files\KeePass\KeePassCMD.exe",
     [int]$PasswordLength = 16
 )
 
@@ -26,17 +27,31 @@ $SecurePassword = ConvertTo-SecureString $NewPassword -AsPlainText -Force
 # 🔄 Modification du mot de passe administrateur
 Set-LocalUser -Name $Username -Password $SecurePassword
 
-# 🔍 Vérification de la présence de KeePassCMD
-if (-Not (Test-Path $KeePassCmdPath)) {
-    Write-Host "❌ Erreur : KeePassCMD.exe introuvable ! Vérifie l'installation de KeePass."
+# 🔍 Vérifier si KeePass.exe existe
+if (-Not (Test-Path $KeePassPath)) {
+    Write-Host "❌ Erreur : KeePass.exe introuvable ! Vérifie l'installation de KeePass."
     exit 1
 }
 
-# 🔑 Ajout du mot de passe dans KeePass
-$KeePassCommand = "`"$KeePassCmdPath`" --pw:$MasterPassword --add --db:`"$DatabasePath`" --title:`"$EntryTitle`" --user:`"$Username`" --password:`"$NewPassword`""
-Invoke-Expression $KeePassCommand
+# 🗝️ Construction de la ligne de commande pour ouvrir KeePass avec le mot de passe
+$KeePassCommand = "`"$KeePassPath`" `"$DatabasePath`" -pw:$MasterPassword"
+
+if ($KeyFilePath -ne "") {
+    $KeePassCommand += " -keyfile:`"$KeyFilePath`""
+}
+
+# 🚀 Lancer KeePass en arrière-plan pour ouvrir la base de données
+Start-Process -FilePath $KeePassPath -ArgumentList "`"$DatabasePath`" -pw:$MasterPassword" -NoNewWindow -Wait
+
+# ⏳ Attendre un court instant pour que KeePass soit bien ouvert
+Start-Sleep -Seconds 2
+
+# 📝 Ajouter une nouvelle entrée avec le mot de passe généré
+$KeePassEntryCommand = "AddEntry `"$DatabasePath`" `"$EntryTitle`" `"$Username`" `"$NewPassword`""
+Start-Process -FilePath $KeePassPath -ArgumentList $KeePassEntryCommand -NoNewWindow -Wait
 
 Write-Host "✅ Le mot de passe de $Username a été changé et enregistré dans KeePass."
+
 
 
 
